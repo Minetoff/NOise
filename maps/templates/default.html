@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ДЕНИС КРАСАВЧИК</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #map {
+        height: 100%;
+        weight: 100%:
+        }
+
+
+
+
+    </style>
+</head>
+<body>
+<p1> Дениска</p1>
+<div id="map"></div>
+<script type="text/javascript">
+
+
+        Points = {}
+        a = 8
+
+        function set_one(b) {
+            a += 1
+        }
+
+    {% for m in maps %}
+        Points[a] = { center: { lat: {{ m.0 }}, lng: {{ m.1 }}},
+                     decibel: {{ m.2 }}}
+        set_one(a)
+    {% endfor %}
+
+
+
+
+
+function initMap() {
+  // Create the map.
+  const map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 14,
+    center: {lat: 43.4148460666, lng: 39.9508710267},
+    mapTypeId: "terrain",
+  });
+
+
+
+
+
+  for (const point in Points) {
+       decibel = Points[point].decibel;
+       if (decibel<=40) {
+           color = "#00E600";
+       } else if (decibel<=80 && decibel>40) {
+           color = "#FFFF00";
+       } else if (decibel<=120 && decibel>80) {
+           color = '#FFA500';
+       } else {
+           color = '#FA0000';
+       }
+       const pointCircle = new google.maps.Circle({
+          strokeColor: color,
+          strokeOpacity: 0.2,
+          strokeWeight: 8,
+          fillColor: color,
+          fillOpacity: 0.6,
+          map,
+          center: Points[point].center,
+          radius: 5,
+       });
+  }
+}
+
+</script>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBxiHoqhK3mom-Q8LlwMNlW2PVw6YkPcEw&callback=initMap&v=weekly"
+        async></script>
+
+</body>
+</html>
