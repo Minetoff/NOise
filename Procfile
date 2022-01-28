@@ -1,0 +1,1 @@
+web: gunicorn djmaps.wsgi --log-file -
