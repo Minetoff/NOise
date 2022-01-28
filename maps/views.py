@@ -1,7 +1,4 @@
 from django.shortcuts import render
-from . import serializers
-from rest_framework import generics
-from .models import Points
 import pyrebase
 
 config = {
@@ -26,15 +23,3 @@ def default_map(request):
     for i in dictionary:
         maps.append([dictionary[i]['lat'], dictionary[i]['lng'], dictionary[i]['db']])
     return render(request, 'default.html', {'maps': maps})
-
-
-
-
-class PointsList(generics.ListCreateAPIView):
-    queryset = Points.objects.all()
-    serializer_class = serializers.PointsSerializer
-
-
-class PointsDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Points.objects.all()
-    serializer_class = serializers.PointsSerializer
