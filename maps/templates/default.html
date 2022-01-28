@@ -94,16 +94,6 @@ function initMap() {
     zoom: 15,
     center: {lat: 43.4148460666, lng: 39.9508710267},
   });
-    const marker = new google.maps.Marker({
-    position: uluru,
-    map: map,
-    title: "Ты навёл на меня",
-  });
-    const info = new google.maps.InfoWindow({
-        content: '<h3>You are here!</h3>'
-  });
-
-
 
 
 
@@ -140,9 +130,6 @@ function initMap() {
           center: Points[point].center,
           radius: 20    ,
        });
-       marker.addListener("click", function() {
-        info.open(map, marker);
-  });
   }
 }
 
