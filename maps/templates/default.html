@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ДЕНИС КРАСАВЧИК</title>
+    <title>NOise</title>
     <style>
         html, body {
             margin: 0;
@@ -16,14 +16,58 @@
         weight: 100%:
         }
 
+        #legend {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: 240px;
+  margin-bottom: 20px;
+  width: 220px;
+  height: 45px;
+  opacity: 0.8;
+  background-color: #000000;
+  color: #bbb;
+  z-index: 1;
+  top: 9px;
+  right: 10px;
+}
 
+.dbItem{
+   margin-top: 4px;
+   margin-left: 10px;
+   margin-right: 10px;
+   width: 50px;
+   height: 19px;
+   font-family: Arial;
+   font-size: 14px;
+   text-align: center;
+   color: #ffffff;
+  }
 
+.legendItem{
+  position: relative;
+    display: block;
+    width: 200px;
+  	height: 6px;
+  	background-image: linear-gradient(to right, #088100, #A3F700, #FFAA00, #FF0000);
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
 
     </style>
 </head>
 <body>
-<p1> Дениска</p1>
 <div id="map"></div>
+ <div id='legend'>
+
+      <div class="dbItem"> < 45 дБ</div>
+      <div class="dbItem"> 65 дБ</div>
+      <div class="dbItem"> > 85 дБ</div>
+      <div class="legendItem"></div>
+
+ </div>
+
 <script type="text/javascript">
 
 
@@ -45,12 +89,20 @@
 
 
 function initMap() {
-  // Create the map.
+  const uluru = { lat: 43.414669312638054, lng: 39.95092954178195 };
   const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 14,
+    zoom: 15,
     center: {lat: 43.4148460666, lng: 39.9508710267},
-    mapTypeId: "terrain",
   });
+    const marker = new google.maps.Marker({
+    position: uluru,
+    map: map,
+    title: "Ты навёл на меня",
+  });
+    const info = new google.maps.InfoWindow({
+        content: '<h3>You are here!</h3>'
+  });
+
 
 
 
@@ -58,25 +110,39 @@ function initMap() {
 
   for (const point in Points) {
        decibel = Points[point].decibel;
-       if (decibel<=40) {
-           color = "#00E600";
-       } else if (decibel<=80 && decibel>40) {
-           color = "#FFFF00";
-       } else if (decibel<=120 && decibel>80) {
-           color = '#FFA500';
+       ops = 0.6
+       sps = 0.2
+       if (decibel<=35 && decibel > 0) {
+           color = "#088100";
+       } else if (decibel<=45 && decibel>35) {
+           color = "#0FE200";
+       } else if (decibel<=65 && decibel>45) {
+           color = "#A3F700";
+       } else if (decibel<1) {
+           ops = 0;
+           sps = 0;
+       } else if (decibel<=80 && decibel>65) {
+           color = '#FFD200';
+       } else if (decibel<=100 && decibel>80) {
+           color = '#FFAA00';
+       } else if (decibel<=120 && decibel>100) {
+           color = '#FF3D00';
        } else {
-           color = '#FA0000';
+           color = '#FF0000';
        }
        const pointCircle = new google.maps.Circle({
           strokeColor: color,
-          strokeOpacity: 0.2,
+          strokeOpacity: sps,
           strokeWeight: 8,
           fillColor: color,
-          fillOpacity: 0.6,
+          fillOpacity: ops,
           map,
           center: Points[point].center,
-          radius: 5,
+          radius: 20    ,
        });
+       marker.addListener("click", function() {
+        info.open(map, marker);
+  });
   }
 }
 

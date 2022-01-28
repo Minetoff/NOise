@@ -23,13 +23,11 @@ def default_map(request):
     maps_ = database.child('points').get().val()
     dictionary = dict(maps_)
     maps = []
-    mapsik = [43.4147106, 39.9510534, 55]
     for i in dictionary:
         maps.append([dictionary[i]['lat'], dictionary[i]['lng'], dictionary[i]['db']])
     return render(request, 'default.html', {'maps': maps})
 
 
-# Create your views here.
 
 
 class PointsList(generics.ListCreateAPIView):
